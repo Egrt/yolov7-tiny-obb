@@ -1,12 +1,12 @@
 # ignore map, miou, datasets
 map_out/
 miou_out/
-VOCdevkit/
+# VOCdevkit/
 datasets/
 Medical_Datasets/
-lfw/
-logs/
-model_data/
+# lfw/
+# logs/
+# model_data/
 .temp_map_out/
 
 # Byte-compiled / optimized / DLL files
