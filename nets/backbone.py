@@ -60,21 +60,24 @@ class Backbone(nn.Module):
         #   输入图片是640, 640, 3
         #-----------------------------------------------#
         ids = [-1, -2, -3, -4]
-        
+        # 640, 640, 3 => 320, 320, 64
         self.stem = Conv(3, transition_channels * 2, 3, 2)
-        
+        # 320, 320, 64 => 160, 160, 128 => 160, 160, 128
         self.dark2 = nn.Sequential(
             Conv(transition_channels * 2, transition_channels * 4, 3, 2),
             Multi_Concat_Block(transition_channels * 4, block_channels * 2, transition_channels * 4, n=n, ids=ids),
         )
+        # 160, 160, 128 => 80, 80, 128 => 80, 80, 256
         self.dark3 = nn.Sequential(
             MP(),
             Multi_Concat_Block(transition_channels * 4, block_channels * 4, transition_channels * 8, n=n, ids=ids),
         )
+        # 80, 80, 256 => 40, 40, 256 => 40, 40, 512
         self.dark4 = nn.Sequential(
             MP(),
             Multi_Concat_Block(transition_channels * 8, block_channels * 8, transition_channels * 16, n=n, ids=ids),
         )
+        # 40, 40, 512 => 20, 20, 512 => 20, 20, 1024
         self.dark5 = nn.Sequential(
             MP(),
             Multi_Concat_Block(transition_channels * 16, block_channels * 16, transition_channels * 32, n=n, ids=ids),
