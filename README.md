@@ -22,21 +22,23 @@ YoloV7-OBB | https://github.com/Egrt/yolov7-obb
 YoloV7-Tiny-OBB | https://github.com/Egrt/yolov7-tiny-obb
 
 ## 性能情况
-| 训练数据集 | 权值文件名称	| 测试数据集 | 输入图片大小 | mAP 0.5 |
-| :-----: | :------: | :------: | :------: | :------: |
-| SSDD | 待训练 | SSDD-Val | 640x640 | 待训练
+| 训练数据集 | 权值文件名称	| 测试数据集 | 输入图片大小 | mAP 0.5 | fps |
+| :-----: | :------: | :------: | :------: | :------: | :------: |
+| UAV-ROD | [yolov7_tiny_obb_uav](https://github.com/Egrt/yolov7-tiny-obb/releases/download/V1.0.0/yolov7_tiny_obb_uav.pth) | UAV-ROD-Val | 640x640 | 98.00% | 50 |
+| UAV-ROD | [yolov7_tiny_trt](https://github.com/Egrt/yolov7-tiny-obb/releases/download/V1.0.0/yolov7_tiny_trt.pth) | UAV-ROD-Val | 640x640 | 97.75% | 120 |
 ### 预测结果展示
 ![预测结果](img/test.jpg)
 ## 所需环境
-torch==1.12.1
-torchvision==0.13.1    
+cuda==11.3
+torch==1.10.1
+torchvision==0.11.2  
 为了使用amp混合精度，推荐使用torch1.7.1以上的版本。
 
 ## 文件下载
 
-SSDD数据集下载地址如下，里面已经包括了训练集、测试集、验证集（与测试集一样），无需再次划分：  
-链接: https://pan.baidu.com/s/1Lpg28ZvMSgNXq00abHMZ5Q
-提取码: 2021
+UAV-ROD数据集下载地址如下，里面已经包括了训练集、测试集、验证集（与测试集一样），无需再次划分：  
+链接: https://pan.baidu.com/s/1Ae8AGb2L6zCjCwJFzs2WfA 
+提取码: ybec 
 
 ## 训练步骤
 ### a、训练VOC07+12数据集

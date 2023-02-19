@@ -25,8 +25,8 @@ class YOLO(object):
         #   验证集损失较低不代表mAP较高，仅代表该权值在验证集上泛化性能较好。
         #   如果出现shape不匹配，同时要注意训练时的model_path和classes_path参数的修改
         #--------------------------------------------------------------------------#
-        "model_path"        : 'model_data/yolov7_obb_ssdd.pth',
-        "classes_path"      : 'model_data/ssdd_classes.txt',
+        "model_path"        : 'model_data/yolov7_tiny_obb_uav.pth',
+        "classes_path"      : 'model_data/uav_classes.txt',
         #---------------------------------------------------------------------#
         #   anchors_path代表先验框对应的txt文件，一般不修改。
         #   anchors_mask用于帮助代码找到对应的先验框，一般不修改。
@@ -54,7 +54,7 @@ class YOLO(object):
         #   是否使用Cuda
         #   没有GPU可以设置成False
         #-------------------------------#
-        "cuda"              : False,
+        "cuda"              : True,
     }
 
     @classmethod
@@ -92,7 +92,7 @@ class YOLO(object):
     #---------------------------------------------------#
     #   生成模型
     #---------------------------------------------------#
-    def generate(self, onnx=False):
+    def generate(self, onnx=False, trt=True):
         #---------------------------------------------------#
         #   建立yolo模型，载入yolo模型的权重
         #---------------------------------------------------#
@@ -105,7 +105,12 @@ class YOLO(object):
             if self.cuda:
                 self.net = nn.DataParallel(self.net)
                 self.net = self.net.cuda()
+        if trt:
+            from torch2trt import TRTModule
 
+            model_trt = TRTModule()
+            model_trt.load_state_dict(torch.load('model_data/yolov7_tiny_trt.pth'))
+            self.net  = model_trt
     #---------------------------------------------------#
     #   检测图片
     #---------------------------------------------------#
@@ -180,9 +185,7 @@ class YOLO(object):
             polygon_list = list(poly)
             label = '{} {:.2f}'.format(predicted_class, score)
             draw = ImageDraw.Draw(image)
-            label_size = draw.textsize(label, font)
             label = label.encode('utf-8')
-            print(label, polygon_list)
             
             text_origin = np.array([poly[0], poly[1]], np.int32)
 

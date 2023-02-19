@@ -39,8 +39,8 @@ if __name__ == "__main__":
     #   video_path、video_save_path和video_fps仅在mode='video'时有效
     #   保存视频时需要ctrl+c退出或者运行到最后一帧才会完成完整的保存步骤。
     #----------------------------------------------------------------------------------------------------------#
-    video_path      = 0
-    video_save_path = ""
+    video_path      = "img/input.mp4"
+    video_save_path = "img/output.mp4"
     video_fps       = 25.0
     #----------------------------------------------------------------------------------------------------------#
     #   test_interval       用于指定测量fps的时候，图片检测的次数。理论上test_interval越大，fps越准确。
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     #   test_interval和fps_image_path仅在mode='fps'有效
     #----------------------------------------------------------------------------------------------------------#
     test_interval   = 100
-    fps_image_path  = "img/street.jpg"
+    fps_image_path  = "img/test.jpg"
     #-------------------------------------------------------------------------#
     #   dir_origin_path     指定了用于检测的图片的文件夹路径
     #   dir_save_path       指定了检测完图片的保存路径

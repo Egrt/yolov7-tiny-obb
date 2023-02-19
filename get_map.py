@@ -6,7 +6,7 @@ from tqdm import tqdm
 import numpy as np
 from utils.utils import get_classes
 from utils.utils_map import get_coco_map, get_map
-from utils.utils_rbox import poly2hbb
+from utils.utils_rbox import *
 from yolo import YOLO
 
 if __name__ == "__main__":
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     #   此处的classes_path用于指定需要测量VOC_map的类别
     #   一般情况下与训练和预测所用的classes_path一致即可
     #--------------------------------------------------------------------------------------#
-    classes_path    = 'model_data/ssdd_classes.txt'
+    classes_path    = 'model_data/uav_classes.txt'
     #--------------------------------------------------------------------------------------#
     #   MINOVERLAP用于指定想要获得的mAP0.x，mAP0.x的意义是什么请同学们百度一下。
     #   比如计算mAP0.75，可以设定MINOVERLAP = 0.75。
@@ -116,17 +116,15 @@ if __name__ == "__main__":
                     obj_name = obj.find('name').text
                     if obj_name not in class_names:
                         continue
-                    bndbox  = obj.find('rotated_bndbox')
-                    x1      = bndbox.find('x1').text
-                    y1      = bndbox.find('y1').text
-                    x2      = bndbox.find('x2').text
-                    y2      = bndbox.find('y2').text
-                    x3      = bndbox.find('x3').text
-                    y3      = bndbox.find('y3').text
-                    x4      = bndbox.find('x4').text
-                    y4      = bndbox.find('y4').text
-                    poly    = np.array([[x1, y1, x2, y2, x3, y3, x4, y4]], dtype=np.int32)
-                    hbb     = poly2hbb(poly)
+                    bndbox  = obj.find('robndbox')
+                    cx = float(bndbox.find('cx').text)
+                    cy = float(bndbox.find('cy').text)
+                    h = float(bndbox.find('h').text)
+                    w = float(bndbox.find('w').text)
+                    angle = float(bndbox.find('angle').text)
+                    rbox = np.array([[cx, cy, w, h, angle]], dtype=np.float32)
+                    poly = rbox2poly(rbox)
+                    hbb  = poly2hbb(poly)
                     xc, yc, w, h = hbb[0]
                     left   = xc - w/2
                     top    = yc - h/2

@@ -1,4 +1,5 @@
 # ignore map, miou, datasets
+*.mp4
 map_out/
 miou_out/
 VOCdevkit/
