@@ -7,9 +7,7 @@ datasets/
 Medical_Datasets/
 lfw/
 logs/
-model_data/yolov7_tiny_obb_uav.pth
-model_data/yolov7_tiny_backbone_weights.pth
-model_data/yolov7_tiny_trt.pth
+model_data/
 .temp_map_out/
 
 # Byte-compiled / optimized / DLL files
