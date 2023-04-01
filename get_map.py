@@ -1,6 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
-
+import cv2
 from PIL import Image
 from tqdm import tqdm
 import numpy as np
@@ -117,23 +117,19 @@ if __name__ == "__main__":
                     if obj_name not in class_names:
                         continue
                     bndbox  = obj.find('robndbox')
-                    cx = float(bndbox.find('cx').text)
-                    cy = float(bndbox.find('cy').text)
-                    h = float(bndbox.find('h').text)
-                    w = float(bndbox.find('w').text)
-                    angle = float(bndbox.find('angle').text)
-                    rbox = np.array([[cx, cy, w, h, angle]], dtype=np.float32)
-                    poly = rbox2poly(rbox)
-                    hbb  = poly2hbb(poly)
-                    xc, yc, w, h = hbb[0]
-                    left   = xc - w/2
-                    top    = yc - h/2
-                    right  = xc + w/2
-                    bottom = yc + h/2
+                    cx      = float(bndbox.find('cx').text)
+                    cy      = float(bndbox.find('cy').text)
+                    h       = float(bndbox.find('h').text)
+                    w       = float(bndbox.find('w').text)
+                    theta   = float(bndbox.find('angle').text)
+                    rbox    = np.array([[cx, cy, w, h, theta]], dtype=np.float32)
+                    poly    = rbox2poly(rbox)[0]
+                    poly    = np.float32(poly.reshape(4, 2))
+                    (x, y), (w, h), angle = cv2.minAreaRect(poly)  # θ ∈ [0， 90]
                     if difficult_flag:
-                        new_f.write("%s %s %s %s %s difficult\n" % (obj_name, left, top, right, bottom))
+                        new_f.write("%s %s %s %s %s %s difficult\n" % (obj_name, int(x), int(y), int(w), int(h), angle))
                     else:
-                        new_f.write("%s %s %s %s %s\n" % (obj_name, left, top, right, bottom))
+                        new_f.write("%s %s %s %s %s %s\n" % (obj_name, int(x), int(y), int(w), int(h), angle))
         print("Get ground truth result done.")
 
     if map_mode == 0 or map_mode == 3:
